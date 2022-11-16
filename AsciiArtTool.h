@@ -14,14 +14,14 @@
  */
 
 /**
- * asciiArtRead compresses the art from a file to an RLE
+ * asciiArtRead: compresses the art from a file to an RLE
  *
  * @param in_stream - Reading from this file
- * @return  RLEList - Returns the compressed list
+ * @return  RLEList - Returns the a compressed list fits with the text in in_stream file
  */
 RLEList asciiArtRead(FILE* in_stream);
 /**
- *  asciiArtPrint          - Prints the image from a compressed RLE
+ * asciiArtPrint: Prints the image from a compressed RLE
  *
  * @param list             - Reading from this file
  * @param out_stream       - Writing to this file
@@ -31,10 +31,10 @@ RLEList asciiArtRead(FILE* in_stream);
  */
 RLEListResult asciiArtPrint(RLEList list, FILE* out_stream);
 /**
- *  asciiArtPrintEncoded   - Given RLE list types the compressed RLE to the file @param out_stream
+ * asciiArtPrintEncoded: Given RLE list types the compressed RLE to the file @param out_stream
  *
- * @param list             - The file we read from
- * @param out_stream       - The file we write to
+ * @param list             - Rading this RLElist
+ * @param out_stream       - Writing to this file
  * @return
  *  RLE_LIST_NULL_ARGUMENT if a NULL was sent as a paramater.
  *     RLE_LIST_SUCCESS if the encoding is done successfully.
