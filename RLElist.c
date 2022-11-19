@@ -101,7 +101,7 @@ RLEList RLEListCreate()
     if(!list) {
         return NULL;
     }
-    list->next-=NULL;
+    list->next=NULL;
     list->data=0;
     list->times=0;
     return list;
