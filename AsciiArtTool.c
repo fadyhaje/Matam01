@@ -1,8 +1,9 @@
-#include "RLEList.h"
+#include "AsciiArtTool.h"
 #include <stdio.h>
+#include "stdlib.h"
+
 RLEList asciiArtRead(FILE* in_stream)
 {
-    FILE* stream =fopen("in_stream","r");
     if(stream==NULL)
         return NULL;
     char c;
@@ -12,11 +13,11 @@ RLEList asciiArtRead(FILE* in_stream)
     }
    Set_Data(list, fgetc(stream));
    Set_times(list,1);
-    while((c==fgetc(stream))!=EOF)
+    while(!feof(in_stream))
     {
+        c=fgetc(stream);
         RLEListAppend(list,c);
     }
-    fclose(stream);
     return list;
 }
 
