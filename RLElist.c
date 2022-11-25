@@ -10,16 +10,16 @@ struct RLEList_t{
 RLEListResult RLEListAppend(RLEList list, char value){
     if(list==NULL)
     {
-      return RLE_LIST_NULL_ARGUMENT;
+        return RLE_LIST_NULL_ARGUMENT;
     }
     RLEList addedRLE=RLEListCreate();
     if(addedRLE==NULL)
     {
         return RLE_LIST_OUT_OF_MEMORY;
-    }    
+    }
     addedRLE->data=value;
-    addedRLE->times=1; 
-    addedRLE-next=NULL;
+    addedRLE->times=1;
+    addedRLE->next=NULL;
     while(list->next) {
         list = list->next;
     }
@@ -32,8 +32,8 @@ RLEListResult RLEListAppend(RLEList list, char value){
         list->data=addedRLE->data;
         list->times=addedRLE->times;
         list->next=NULL;
-        RLEListDestroy(addedRLE); 
-     }
+        RLEListDestroy(addedRLE);
+    }
     else{
         list->next=addedRLE;
     }
@@ -41,34 +41,34 @@ RLEListResult RLEListAppend(RLEList list, char value){
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function)
-{  
+{
     if(list==NULL|| map_function==NULL)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-RLEList temp=list->next;
-list->data=map_function(list->data);
-while(temp)
-{
-    temp->data=map_function(temp->data);
-    if(list->data==temp->data){
-        list->times+=temp->times;
-        list->next=temp->next;
-        temp->next=NULL;
-        RLEListDestroy(temp);
-        temp=list->next->next;
-        list=list->next;
+    RLEList temp=list->next;
+    list->data=map_function(list->data);
+    while(temp)
+    {
+        temp->data=map_function(temp->data);
+        if(list->data==temp->data){
+            list->times+=temp->times;
+            list->next=temp->next;
+            temp->next=NULL;
+            RLEListDestroy(temp);
+            temp=list->next->next;
+            list=list->next;
+        }
+        else {
+            list = list->next;
+            temp = temp->next;
+        }
     }
-    else {
-        list = list->next;
-        temp = temp->next;
-    }
-}
     return RLE_LIST_SUCCESS;
 }
 
 int RLEListSize(RLEList list){
-  int count=0;
+    int count=0;
     if(list==NULL)
     {
         return -1;
@@ -79,7 +79,7 @@ int RLEListSize(RLEList list){
         list=list->next;
 
     }
-return count;
+    return count;
 }
 
 char RLEListGet(RLEList list, int index, RLEListResult *result) {
@@ -176,10 +176,10 @@ void RLEListDestroy(RLEList list){
 
 static void check(RLEList list)
 {
-    if(list->next!=NULL && list->value==list->next->value)
+    if(list->next!=NULL && list->data==list->next->data)
     {
         RLEList unwantedIndex=list->next;
-        list->repetitions+=unwantedIndex->repetitions;
+        list->times+=unwantedIndex->times;
         RLEList toDelete = unwantedIndex;
         list->next = unwantedIndex->next;
         free(toDelete);
@@ -193,9 +193,9 @@ static RLEListResult Remove_next_node(RLEList list)
     {
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
-    if(unwantedIndex->repetitions!=1)
+    if(unwantedIndex->times!=1)
     {
-        unwantedIndex->repetitions--;
+        unwantedIndex->times--;
     }
     else
     {
@@ -251,7 +251,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
         index-=list->next->times;
         list=list->next;
     }
-     return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    return RLE_LIST_INDEX_OUT_OF_BOUNDS;
 }
 
 int numOfNodes(RLEList list){
@@ -260,7 +260,7 @@ int numOfNodes(RLEList list){
         count++;
         list=list->next;
     }
-    return count; 
+    return count;
 }
 
 int DigitsSingleNode(int num){
@@ -276,7 +276,7 @@ int DigitsList(RLEList list){
     int sum=0;
     int length= numOfNodes(list);
     for (int i=0;i<length;i++){
-        int temp_num=temp_list->times;
+        int temp_num=list->times;
         if(temp_num < 10)
         {
             sum++;
@@ -294,8 +294,8 @@ int rev_Func(int num){
     int reverse_num=0;
     while(num!=0)
     {
-                reverse_num = reverse_num * 10 + num%10;
-                num = num/10;
+        reverse_num = reverse_num * 10 + num%10;
+        num = num/10;
     }
     return reverse_num;
 }
@@ -329,7 +329,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         string_list[index++]=temp_list->data;
         temp_num=temp_list->times;
         count_num+=DigitsSingleNode(temp_num);
-        int reverse_num=rev_Fun(temp_num);
+        int reverse_num=rev_Func(temp_num);
         for(int i=0;i<count_num;i++)
         {
             string_list[index++]=reverse_num%10+'0';
@@ -356,9 +356,9 @@ int Get_times(RLEList list)
 }
 void Set_Data(RLEList list,char data)
 {
-     list->data=data;
+    list->data=data;
 }
 void Set_times(RLEList list,char times)
 {
-     list->times=times;
+    list->times=times;
 }
