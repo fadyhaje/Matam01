@@ -127,7 +127,7 @@ void RLEListDestroy(RLEList list){
         free(toDelete);
     }
 }
-RLEListResult RLEListRemove(RLEList list, int index)
+/*RLEListResult RLEListRemove(RLEList list, int index)
 {
     if(list==NULL)
     {
@@ -169,6 +169,87 @@ RLEListResult RLEListRemove(RLEList list, int index)
 
     }
     return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+}*/
+
+
+static void check(RLEList list)
+{
+    if(list->next!=NULL && list->value==list->next->value)
+    {
+        RLEList unwantedIndex=list->next;
+        list->repetitions+=unwantedIndex->repetitions;
+        RLEList toDelete = unwantedIndex;
+        list->next = unwantedIndex->next;
+        free(toDelete);
+    }
+}
+
+static RLEListResult Remove_next_node(RLEList list)
+{
+    RLEList unwantedIndex=list->next;
+    if(unwantedIndex==NULL)
+    {
+        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    }
+    if(unwantedIndex->repetitions!=1)
+    {
+        unwantedIndex->repetitions--;
+    }
+    else
+    {
+        list->next=unwantedIndex->next;
+        unwantedIndex->next=NULL;
+        RLEListDestroy(unwantedIndex);
+        check(list);
+        return RLE_LIST_SUCCESS;
+    }
+    return RLE_LIST_SUCCESS;
+}
+
+RLEListResult RLEListRemove(RLEList list, int index)
+{
+    if(list==NULL)
+    {
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+    if(index<0)
+    {
+        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    }
+    if(list->times>index)
+    {
+        if(list->times!=1)
+        {
+            list->times--;
+        }
+        else
+        {
+            if(list->next==NULL)
+            {
+                list->times=0;
+            }
+            else
+            {
+                RLEList to_delete=list->next;
+                list->data=to_delete->data;
+                list->times=to_delete->times;
+                list->next=to_delete->next;
+                free(to_delete);
+            }
+        }
+        return RLE_LIST_SUCCESS;
+    }
+    index-=list->times;
+    while(list->next!=NULL)
+    {
+        if(list->next->times >index)
+        {
+            return Remove_next_node(list);
+        }
+        index-=list->next->times;
+        list=list->next;
+    }
+     return RLE_LIST_INDEX_OUT_OF_BOUNDS;
 }
 
 int numOfNodes(RLEList list){
@@ -207,6 +288,17 @@ int DigitsList(RLEList list){
     return sum;
 }
 
+int rev_Func(int num){
+    int reverse_num=0;
+    while(num!=0)
+    {
+                reverse_num = reverse_num * 10 + num%10;
+                num = num/10;
+    }
+    return reverse_num;
+}
+
+
 char* RLEListExportToString(RLEList list, RLEListResult* result)
 {
     if(list==NULL)
@@ -235,20 +327,14 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         string_list[index++]=temp_list->data;
         temp_num=temp_list->times;
         count_num+=DigitsSingleNode(temp_num);
-        int reverse_num = 0;
-        while(temp_num!=0)
-        {
-                reverse_num = reverse_num * 10 + temp_num%10;
-                temp_num = temp_num/10;
-        }
-        temp_num=temp_list->times;
+        int reverse_num=rev_Fun(temp_num);
         for(int i=0;i<count_num;i++)
         {
             string_list[index++]=reverse_num%10+'0';
             reverse_num/=10;
         }
         string_list[index++]=10;
-        // 10 means new line in the ascci table
+        //new line
         temp_list = temp_list->next;
     }
     string_list[index]=(char)0;
