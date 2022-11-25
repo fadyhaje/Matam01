@@ -1,5 +1,7 @@
 #include "RLEList.h"
 #include <stdlib.h>
+#include <stdio.h>
+
 struct RLEList_t{
     struct RLEList_t *next;
     char data;
