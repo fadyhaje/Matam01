@@ -170,3 +170,91 @@ RLEListResult RLEListRemove(RLEList list, int index)
     }
     return RLE_LIST_INDEX_OUT_OF_BOUNDS;
 }
+
+int numOfNodes(RLEList list){
+    int count=0;
+    while(list){
+        count++;
+        list=list->next;
+    }
+    return count; 
+}
+
+int DigitsSingleNode(int num){
+    int count=0;
+    while (num>0){
+        count++;
+        num=num/10;
+    }
+    return count;
+}
+
+int DigitsList(RLEList list){
+    int sum=0;
+    int length= numOfNodes(list);
+    for (int i=0;i<length;i++){
+        int temp_num=temp_list->times;
+        if(temp_num < 10)
+        {
+            sum++;
+        }
+        else
+        {
+            sum+=DigitsSingleNode(list->times);
+        }
+        list=list->next;
+    }
+    return sum;
+}
+
+char* RLEListExportToString(RLEList list, RLEListResult* result)
+{
+    if(list==NULL)
+    {
+        if(result!=NULL)
+        {
+            *result= RLE_LIST_NULL_ARGUMENT;
+        }
+        return NULL;
+    }
+    int count=DigitsList(list),count_num=numOfNodes(list);
+    char* string_list= malloc(sizeof(char)*(RLEListSize(list)*2+count+1));
+    if(string_list==NULL)
+    {
+        if(result!=NULL)
+        {
+            *result=RLE_LIST_OUT_OF_MEMORY;
+        }
+        return NULL;
+    }
+    RLEList temp_list=list;
+    int index=0,temp_num;
+    while(temp_list)
+    {
+        count_num=0;
+        string_list[index++]=temp_list->data;
+        temp_num=temp_list->times;
+        count_num+=DigitsSingleNode(temp_num);
+        int reverse_num = 0;
+        while(temp_num!=0)
+        {
+                reverse_num = reverse_num * 10 + temp_num%10;
+                temp_num = temp_num/10;
+        }
+        temp_num=temp_list->times;
+        for(int i=0;i<count_num;i++)
+        {
+            string_list[index++]=reverse_num%10+'0';
+            reverse_num/=10;
+        }
+        string_list[index++]=10;
+        // 10 means new line in the ascci table
+        temp_list = temp_list->next;
+    }
+    string_list[index]=(char)0;
+    if(result!=NULL)
+    {
+        *result= RLE_LIST_SUCCESS;
+    }
+    return string_list;
+}
