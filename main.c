@@ -1,6 +1,6 @@
 #include "AsciiArtTool.h"
 #include "string.h"
-static char invert(char letter)
+static char reversed(char letter)
 {
     if(' '==letter)
     {
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
       result= asciiArtPrintEncoded(list,output);
     }
     else{
-         MapFunction mapFunction=invert;
+         MapFunction mapFunction=reversed;
         result=RLEListMap(list,mapFunction);
         if(result==RLE_LIST_SUCCESS)
         {
