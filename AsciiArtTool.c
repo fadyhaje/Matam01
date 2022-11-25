@@ -29,7 +29,8 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream)
     char data;
     int i;
     RLEListResult result;
-    while(i<RLEListSize(list)){
+    int list_size=RLEListSize(list);
+    while(i<list_size){
     {
         data=RLEListGet(list,i,&result);
         if(resul!=RLE_LIST_SUCCESS)
