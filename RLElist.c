@@ -1,34 +1,46 @@
 #include "RLEList.h"
 #include <stdlib.h>
 struct RLEList_t{
-
+    struct RLEList_t *next;
+    char data;
+    int times;
 };
 RLEListResult RLEListAppend(RLEList list, char value){
-    if(!list)
+    if(list==NULL)
     {
       return RLE_LIST_NULL_ARGUMENT;
     }
+    RLEList addedRLE=RLEListCreate();
+    if(addedRLE==NULL)
+    {
+        return RLE_LIST_OUT_OF_MEMORY;
+    }    
+    addedRLE->data=value;
+    addedRLE->times=1; 
+    addedRLE-next=NULL;
     while(list->next) {
         list = list->next;
     }
     if(list->data==value)
-{
-        list->times++;
-}
-    else
     {
-        RLEList newlist=malloc(sizeof(*newlist));
-        if(!newlist)
-            return RLE_LIST_OUT_OF_MEMORY;
-        newlist ->data=value;
-        newlist->times=1;
-        newlist->next=NULL;
-        list->next=newlist;
+        list->times++;
+        RLEListDestroy(addedRLE);
+    }
+    else if(list->times==0){
+        list->data=addedRLE->data;
+        list->times=addedRLE->times;
+        list->next=NULL;
+        RLEListDestroy(addedRLE); 
+     }
+    else{
+        list->next=addedRLE;
     }
     return RLE_LIST_SUCCESS;
 }
+
 RLEListResult RLEListMap(RLEList list, MapFunction map_function)
-{    if(!list||!map_function)
+{  
+    if(list==NULL|| map_function==NULL)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
@@ -40,7 +52,8 @@ while(temp)
     if(list->data==temp->data){
         list->times+=temp->times;
         list->next=temp->next;
-        free(temp);
+        temp->next=NULL;
+        RLEListDestroy(temp);
         temp=list->next->next;
         list=list->next;
     }
@@ -50,16 +63,17 @@ while(temp)
     }
 }
     return RLE_LIST_SUCCESS;
-
 }
+
 int RLEListSize(RLEList list){
   int count=0;
-    if(!list)
+    if(list==NULL)
     {
         return -1;
     }
     while(list)
-    {count+=list->times;
+    {
+        count+=(list->times);
         list=list->next;
 
     }
@@ -67,46 +81,44 @@ return count;
 }
 
 char RLEListGet(RLEList list, int index, RLEListResult *result) {
-    if (!list){
-        if(!result) {
+    if (list==NULL){
+        if(result!=NULL) {
             *result = RLE_LIST_NULL_ARGUMENT;
         }
         return 0;
     }
     if(index<0){
-        if(!result) {
+        if(result!=NULL) {
             *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
         }
         return 0;
     }
     while(list){
-        if(list->times>=index){//check
-            if(!result) {
+        if(list->times>index){//check
+            if(result!=NULL) {
                 *result = RLE_LIST_SUCCESS;
             }
             return list->data;
         }
         index-=list->times;
         list=list->next;
-
     }
-    if(!result) {
+    if(result!=NULL) {
         *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
     return 0;
 }
 RLEList RLEListCreate()
 {
-    RLEList list=malloc(sizeof(*list));
-    if(!list) {
+    RLEList list=(RLEList) malloc(sizeof(struct RLEList_t));
+    if(list==NULL) {
         return NULL;
     }
     list->next=NULL;
-    list->data=0;
+    list->data=(char) 0;
     list->times=0;
     return list;
-}//implement the functions here
-
+}
 
 void RLEListDestroy(RLEList list){
     while(list){
@@ -117,7 +129,7 @@ void RLEListDestroy(RLEList list){
 }
 RLEListResult RLEListRemove(RLEList list, int index)
 {
-    if(!list)
+    if(list==NULL)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
@@ -127,7 +139,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
     }
     RLEList temp=list;
     while(list){
-        if(list->times>=index){//check
+        if(list->times>index){
             if(list->times>1) {
                 list->times--;
             }
