@@ -4,15 +4,15 @@
 
 RLEList asciiArtRead(FILE* in_stream)
 {
-    if(stream==NULL)
-        return NULL;
+    //if(stream==NULL)
+       // return NULL;
     char c;
    RLEList list= RLEListCreate();
     if(list==NULL){
         return NULL;
     }
-   Set_Data(list, fgetc(stream));
-   Set_times(list,1);
+   //Set_Data(list, fgetc(stream));
+   //Set_times(list,1);
     while(!feof(in_stream))
     {
         c=fgetc(stream);
