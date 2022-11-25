@@ -346,3 +346,19 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     }
     return string_list;
 }
+char Get_Data(RLEList list)
+{
+    return list->data;
+}
+int Get_times(RLEList list)
+{
+    return list->times;
+}
+void Set_Data(RLEList list,char data)
+{
+     list->data=data;
+}
+void Set_times(RLEList list,char times)
+{
+     list->times=times;
+}
