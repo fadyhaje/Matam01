@@ -146,8 +146,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result);
 * 	LIST_SUCCESS if the mapping is done successfully.
 */
 RLEListResult RLEListMap(RLEList list, MapFunction map_function);
-void Set_Data(RLEList list,char data);
-void Set_times(RLEList list,char times);
 
 
 #endif // HW1_RLELIST_H
