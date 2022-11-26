@@ -32,7 +32,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream)
     RLEListResult result;
     int list_size=RLEListSize(list);
     while(i<list_size){
-        {
+        
             data=RLEListGet(list,i,&result);
             if(result!=RLE_LIST_SUCCESS)
             {
@@ -45,7 +45,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream)
             i++;
         }
         return RLE_LIST_SUCCESS;
-    }}
+    }
 
     RLEListResult asciiArtPrintEncoded(RLEList list, FILE* out_stream)
     {
