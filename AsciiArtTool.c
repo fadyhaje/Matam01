@@ -1,4 +1,4 @@
-/*#include "AsciiArtTool.h"
+#include "AsciiArtTool.h"
 #include <stdio.h>
 #include "stdlib.h"
 
@@ -58,15 +58,15 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream)
         }
         RLEListResult result;
         char* list_string=RLEListExportToString(list, &result);
-        if(list_string==NULL)
+        if(!list_string)
         {
             return RLE_LIST_NULL_ARGUMENT;
         }
         fprintf(out_stream, "%s", list_string);
         free(list_string);
         return result;
-    }*/
-#include "AsciiArtTool.h"
+    }
+/*#include "AsciiArtTool.h"
 #include "stdlib.h"
 RLEList asciiArtRead(FILE* in_stream)
 {
@@ -126,4 +126,4 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream)
     fprintf(out_stream, "%s", StringList);
     free(StringList);
     return result;
-}
+}*/
