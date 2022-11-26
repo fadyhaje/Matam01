@@ -49,8 +49,8 @@ RLEListResult RLEListMap(RLEList list,MapFunction map_function)
     }
     while(list)
     {
-        list->value= map_function(list->value);
-        if(!(list->next && list->value==map_function(list->next->value) ))
+        list->data= map_function(list->data);
+        if(!(list->next && list->data==map_function(list->next->data) ))
         {
             list=list->next;
         }
