@@ -31,7 +31,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream)
         return RLE_LIST_NULL_ARGUMENT;
     }
     char data;
-    int i;
+    int i=0;
     RLEListResult result;
     int list_size=RLEListSize(list);
     while(i<list_size){
