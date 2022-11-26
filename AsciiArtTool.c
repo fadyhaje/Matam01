@@ -1,5 +1,4 @@
 #include "AsciiArtTool.h"
-#include <stdio.h>
 #include "stdlib.h"
 
 RLEList asciiArtRead(FILE* in_stream)
