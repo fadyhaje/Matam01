@@ -40,8 +40,39 @@ RLEListResult RLEListAppend(RLEList list, char value){
     return RLE_LIST_SUCCESS;
 }
 
-RLEListResult RLEListMap(RLEList list, MapFunction map_function)
+RLEListResult RLEListMap(RLEList list,MapFunction map_function)
 {
+    if(map_function==NULL   || list==NULL)
+    {
+        return RLE_LIST_NULL_ARGUMENT;
+        
+    }
+    while(list)
+    {
+        list->value= map_function(list->value);
+        if(!(list->next && list->value==map_function(list->next->value) ))
+        {
+            list=list->next;
+        }
+        else{
+            RLEList removeNode=list->next;
+            list->times=list->times+list->next->times;
+            list->next=removeNode->next;
+            removeNode->next=NULL;
+            RLEListDestroy(removeNode);
+        }
+    }
+    return RLE_LIST_SUCCESS;
+}
+
+
+
+
+
+
+/*RLEListResult RLEListMap(RLEList list, MapFunction map_function)
+{
+    int flag=0;
     if(list==NULL|| map_function==NULL)
     {
         return RLE_LIST_NULL_ARGUMENT;
@@ -50,14 +81,24 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
     list->data=map_function(list->data);
     while(temp)
     {
+        if(flag!=1){
         temp->data=map_function(temp->data);
+        }
+        else{
+            list->list=map_function(list->data);
+            temp->list=map_function(temp->data);
+            flag=0;
+        }
         if(list->data==temp->data){
             list->times+=temp->times;
             list->next=temp->next;
             temp->next=NULL;
             RLEListDestroy(temp);
+            if(list->next->next!=NULL){
             temp=list->next->next;
+            }
             list=list->next;
+            flag=1;
         }
         else {
             list = list->next;
@@ -65,7 +106,7 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
         }
     }
     return RLE_LIST_SUCCESS;
-}
+}*/
 
 int RLEListSize(RLEList list){
     int count=0;
