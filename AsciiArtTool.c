@@ -18,7 +18,7 @@ RLEList asciiArtRead(FILE* in_stream)
         {
             break;
         }
-       RLEListAppend(list,Letter);        
+       RLEListAppend(list,c);        
     }
     return list;
 }
