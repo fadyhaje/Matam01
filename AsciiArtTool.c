@@ -13,10 +13,13 @@ RLEList asciiArtRead(FILE* in_stream)
     }
     //Set_Data(list, fgetc(stream));
     //Set_times(list,1);
-    while(!feof(in_stream))
-    {
+    for(int i=0;i>-1;i++){
         c=fgetc(in_stream);
-        RLEListAppend(list,c);
+        if(feof(in_stream))
+        {
+            break;
+        }
+       RLEListAppend(list,Letter);        
     }
     return list;
 }
