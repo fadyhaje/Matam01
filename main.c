@@ -37,10 +37,11 @@ int main(int argc, char** argv)
     RLEListResult result;
     if(strcmp(argv[1],"-i")!=0)
     {
-      result= asciiArtPrintEncoded(list,output);
+        result= asciiArtPrintEncoded(list,output);
     }
-    else{
-         MapFunction mapFunction=reversed;
+    else
+    {
+        MapFunction mapFunction=reversed;
         result=RLEListMap(list,mapFunction);
         if(result==RLE_LIST_SUCCESS)
         {
