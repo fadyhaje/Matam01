@@ -29,9 +29,16 @@ int main(int argc, char** argv)
         return RLE_LIST_NULL_ARGUMENT;
     }
     output=fopen(argv[3],"w");
+    if(output==NULL)
+    {
+        fclose(input);
+        return RLE_LIST_NULL_ARGUMENT;
+    }
     RLEList list=asciiArtRead(input);
     if(list==NULL)
     {
+        fclose(input);
+        fclose(output);
         return RLE_LIST_OUT_OF_MEMORY;
     }
     RLEListResult result;
@@ -49,5 +56,7 @@ int main(int argc, char** argv)
         }
     }
     RLEListDestroy(list);
+    fclose(input);
+    fclose(output);
     return result;
 }
